@@ -46,7 +46,7 @@ import cn.ucai.superwechat.utils.MFGT;
 public class RegisterActivity extends BaseActivity {
     @Bind(R.id.img_back)
     ImageView imgBack;
-    @Bind(R.id.txt_title)
+    @Bind(R.id.txt_mtitle)
     TextView txtTitle;
     @Bind(R.id.btn_send)
     Button btnSend;

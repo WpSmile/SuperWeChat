@@ -25,7 +25,7 @@ android {
     defaultConfig {
         applicationId "com.hyphenate.chatuidemo"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 22
         multiDexEnabled true
     }
 
@@ -70,5 +70,5 @@ dependencies {
 //    compile ('com.anthonycr.grant:permissions:1.0'){
 //        exclude module: 'support-v4'
 //    }
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
 }

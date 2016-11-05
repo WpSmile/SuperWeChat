@@ -1253,6 +1253,8 @@ public class SuperWeChatHelper {
         isGroupAndContactListenerRegisted = false;
         
         setContactList(null);
+        setAppContactList(null);
+
         setRobotList(null);
         getUserProfileManager().reset();
         SuperWeChatDBManager.getInstance().closeDB();

@@ -25,9 +25,14 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,9 +63,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     @Bind(R.id.tv_userinfo_name)
     TextView tvUserinfoName;
 
-    
 
-    
     private ProgressDialog dialog;
     private RelativeLayout rlNickName;
     User user;
@@ -82,7 +85,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     }
 
     private void initListener() {
-        EaseUserUtils.setCurrentAppUserAvatar(this,ivUserinfoAvatar);
+        EaseUserUtils.setCurrentAppUserAvatar(this, ivUserinfoAvatar);
         EaseUserUtils.setCurrentAppUserNick(tvUserinfoNick);
         EaseUserUtils.setCurrentAppUserName(tvUserinfoName);
     }
@@ -179,18 +182,18 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         NetDao.updateNick(this, user.getMUserName(), nickName, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
-                if (s!=null){
+                if (s != null) {
                     Result result = ResultUtils.getResultFromJson(s, I.User.class);
-                    L.e(TAG,"result="+result);
-                    if (result!=null&&result.isRetMsg()){
+                    L.e(TAG, "result=" + result);
+                    if (result != null && result.isRetMsg()) {
                         User u = (User) result.getRetData();
                         updateLocalUser(u);
-                    }else {
+                    } else {
                         Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
                                 .show();
                         dialog.dismiss();
                     }
-                }else {
+                } else {
                     Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
                             .show();
                     dialog.dismiss();
@@ -199,7 +202,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
             @Override
             public void onError(String error) {
-                L.e(TAG,"error="+error);
+                L.e(TAG, "error=" + error);
                 Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
                         .show();
                 dialog.dismiss();
@@ -224,13 +227,48 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 break;
             case REQUESTCODE_CUTTING:
                 if (data != null) {
-                    setPicToView(data);
+                    updateAppUserAvatar(data);
+                    //setPicToView(data);
                 }
                 break;
             default:
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void updateAppUserAvatar(final Intent picData) {
+
+        dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+        dialog.show();
+        File file = saveBitmapFile(picData);
+        L.e(TAG,"file===="+file);
+        NetDao.updateAvatar(this, user.getMUserName(), file, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                L.e(TAG, "s=" + s);
+                if (s != null) {
+                    Result result = ResultUtils.getResultFromJson(s, I.User.class);
+                    L.e(TAG,"result==="+result);
+                    if (result != null && result.isRetMsg()) {
+                        setPicToView(picData);
+                    } else {
+                        dialog.dismiss();
+                        CommonUtils.showShortToast(result!=null?result.getRetCode():-1);
+                    }
+                } else {
+                    dialog.dismiss();
+                    CommonUtils.showShortToast(getString(R.string.toast_updatephoto_fail));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                dialog.dismiss();
+                L.e(TAG, "error=" + error);
+                CommonUtils.showShortToast(getString(R.string.toast_updatephoto_fail));
+            }
+        });
     }
 
     public void startPhotoZoom(Uri uri) {
@@ -263,7 +301,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     }
 
     private void uploadUserAvatar(final byte[] data) {
-        dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+
         new Thread(new Runnable() {
 
             @Override
@@ -287,7 +325,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             }
         }).start();
 
-        dialog.show();
+
     }
 
 
@@ -303,8 +341,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             case R.id.img_back:
                 MFGT.finish(this);
                 break;
-            /*case R.id.iv_userinfo_avatar:
-                break;*/
             case R.id.layout_user_avatar:
                 uploadHeadPhoto();
                 break;
@@ -321,7 +357,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                                     Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                if (nickString.equals(user.getMUserNick())){
+                                if (nickString.equals(user.getMUserNick())) {
                                     CommonUtils.showShortToast(getString(R.string.toast_nick_not_modify));
                                     return;
                                 }
@@ -334,4 +370,25 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 break;
         }
     }
+
+    public File saveBitmapFile(Intent picdata) {
+        Bundle extras = picdata.getExtras();
+        if (extras != null) {
+            Bitmap bitmap = extras.getParcelable("data");
+            String imagePath = EaseImageUtils.getImagePath(user.getMUserName()+I.AVATAR_SUFFIX_JPG);
+            File file = new File(imagePath);//将要保存图片的路径
+            L.e(TAG, "file path =" + file.getAbsolutePath());
+            try {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                bos.flush();
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file;
+        }
+        return null;
+    }
+
 }

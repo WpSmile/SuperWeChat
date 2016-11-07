@@ -22,7 +22,7 @@
         android:paddingTop="10dp">
 
         <ImageView
-            android:id="@+id/iv__friend_profile_avatar"
+            android:id="@+id/iv_friend_profile_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/iv_profile_avatar"
+            android:layout_toRightOf="@+id/iv_friend_profile_avatar"
             android:textSize="18sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_profile_nickname"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/iv_profile_avatar"
+            android:layout_toRightOf="@+id/iv_friend_profile_avatar"
             android:textSize="12sp" />
 
     </RelativeLayout>

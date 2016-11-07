@@ -63,7 +63,7 @@ public class FriendProfileActivity extends BaseActivity {
 
     @OnClick(R.id.img_back)
     public void onClick(){
-
+        MFGT.finish(this);
     }
 
     @Override

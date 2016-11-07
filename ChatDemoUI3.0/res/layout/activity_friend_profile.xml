@@ -5,12 +5,12 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/view_layout_title"/>
+    <include layout="@layout/view_layout_title" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/black3"/>
+        android:background="@color/black3" />
 
     <RelativeLayout
         android:id="@+id/layout_friend_profile_view"
@@ -25,9 +25,9 @@
             android:id="@+id/iv__friend_profile_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/default_avatar"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:src="@drawable/default_avatar" />
 
         <TextView
             android:id="@+id/tv_profile_nickname"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/iv_profile_avatar"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_profile_username"
@@ -44,15 +44,16 @@
             android:layout_below="@+id/tv_profile_nickname"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/iv_profile_avatar"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/ll_friend_profile_setting"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="25dp"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,32 +62,45 @@
             android:layout_marginLeft="15dp"
             android:text="设置备注和标签"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </LinearLayout>
 
-    <!--<Button
+    <Button
         android:id="@+id/bt_friend_profile_send"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="25dp"
         android:background="@color/green"
         android:text="发送消息"
-        android:textSize="16sp"
         android:textColor="@color/white"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/bt_friend_profile_chat"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
         android:background="@color/white"
         android:text="视频聊天"
-        android:textSize="16sp"
         android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/bt_friend_profile_add"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>-->
-
-
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:text="加为好友"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone" />
 </LinearLayout>

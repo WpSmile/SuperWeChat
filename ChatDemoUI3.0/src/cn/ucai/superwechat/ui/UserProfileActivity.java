@@ -66,7 +66,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
     private ProgressDialog dialog;
     private RelativeLayout rlNickName;
-    User user;
+    User user ;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -183,10 +183,12 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             @Override
             public void onSuccess(String s) {
                 if (s != null) {
-                    Result result = ResultUtils.getResultFromJson(s, I.User.class);
+                    L.e(TAG,"s===="+s);
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
                     L.e(TAG, "result=" + result);
                     if (result != null && result.isRetMsg()) {
                         User u = (User) result.getRetData();
+                        L.e(TAG,"u:"+u);
                         updateLocalUser(u);
                     } else {
                         Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)

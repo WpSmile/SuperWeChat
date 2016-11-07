@@ -3,19 +3,19 @@ package cn.ucai.superwechat.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
-import java.io.Serializable;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.utils.MFGT;
 
 
@@ -33,6 +33,12 @@ public class FriendProfileActivity extends BaseActivity {
     TextView tvprofileusername;
 
     User user;
+    @Bind(R.id.bt_friend_profile_send)
+    Button btFriendProfileSend;
+    @Bind(R.id.bt_friend_profile_chat)
+    Button btFriendProfileChat;
+    @Bind(R.id.bt_friend_profile_add)
+    Button btFriendProfileAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,7 @@ public class FriendProfileActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
-        if (user==null){
+        if (user == null) {
             MFGT.finish(this);
         }
         initView();
@@ -53,22 +59,45 @@ public class FriendProfileActivity extends BaseActivity {
         txtMtitle.setText(getString(R.string.userinfo_txt_profile));
 
         setUserUnfo();
+        isFriend();
     }
 
     private void setUserUnfo() {
-        EaseUserUtils.setAppUserAvatar(this,user.getMUserName(),ivfriendprofileavatar);
-        EaseUserUtils.setAppUserNick(user.getMUserName(),tvprofilenickname);
-        EaseUserUtils.setAppUserNameWithNo(user.getMUserName(),tvprofileusername);
+        EaseUserUtils.setAppUserAvatar(this, user.getMUserName(), ivfriendprofileavatar);
+        EaseUserUtils.setAppUserNick(user.getMUserNick(), tvprofilenickname);
+        EaseUserUtils.setAppUserNameWithNo(user.getMUserName(), tvprofileusername);
     }
 
-    @OnClick(R.id.img_back)
-    public void onClick(){
-        MFGT.finish(this);
-    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    public void isFriend() {
+        if (SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName())){
+            btFriendProfileSend.setVisibility(View.VISIBLE);
+            btFriendProfileChat.setVisibility(View.VISIBLE);
+        }else {
+            btFriendProfileAdd.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @OnClick({R.id.bt_friend_profile_send, R.id.bt_friend_profile_chat, R.id.bt_friend_profile_add,R.id.img_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_friend_profile_send:
+                break;
+            case R.id.bt_friend_profile_chat:
+                break;
+            case R.id.bt_friend_profile_add:
+                MFGT.gotoSendAddRequest(this,user.getMUserName());
+                break;
+            case R.id.img_back:
+                MFGT.finish(this);
+                break;
+        }
     }
 }

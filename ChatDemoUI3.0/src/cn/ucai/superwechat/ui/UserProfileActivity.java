@@ -1,6 +1,6 @@
 package cn.ucai.superwechat.ui;
 
-import android.app.AlertDialog;
+
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;

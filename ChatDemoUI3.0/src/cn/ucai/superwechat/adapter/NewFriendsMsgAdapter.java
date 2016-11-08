@@ -127,7 +127,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			        msg.getStatus() == InviteMesageStatus.GROUPINVITATION) {
 			    holder.agree.setVisibility(View.VISIBLE);
                 holder.agree.setEnabled(true);
-                holder.agree.setBackgroundResource(android.R.drawable.btn_default);
+                holder.agree.setBackgroundResource(R.drawable.btn_bg_green);
                 holder.agree.setText(str2);
 			    
 				holder.status.setVisibility(View.VISIBLE);

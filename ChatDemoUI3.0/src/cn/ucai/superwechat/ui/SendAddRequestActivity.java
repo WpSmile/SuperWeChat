@@ -18,9 +18,11 @@ import butterknife.OnClick;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 
 public class SendAddRequestActivity extends BaseActivity {
+    private static final String TAG = SendAddRequestActivity.class.getCanonicalName();
 
     @Bind(R.id.img_back)
     ImageView imgBack;
@@ -39,11 +41,11 @@ public class SendAddRequestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_add_request);
         ButterKnife.bind(this);
-
+        L.e(TAG,"0.0.我跳过来了！！！！");
+        username = getIntent().getStringExtra(I.User.USER_NAME);
         if (username==null){
             finish();
         }else {
-            username = getIntent().getStringExtra(I.User.USER_NAME);
             initView();
         }
 

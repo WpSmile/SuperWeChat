@@ -67,11 +67,13 @@ public class MFGT {
         startActivity(context, intent);
     }
 
-    public static void gotoSendAddRequest(Activity context,String username){
+    public static void gotoSendAddRequest(Activity context,String username) {
+        L.e("我也很想跳啊！！！！");
         Intent intent = new Intent();
         intent.setClass(context,SendAddRequestActivity.class);
         intent.putExtra(I.User.USER_NAME,username);
         startActivity(context, intent);
+        L.e("他就是不跳，QAQ！！！");
     }
 
 }

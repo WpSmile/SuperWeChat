@@ -106,6 +106,7 @@ public class AddContactActivity extends BaseActivity {
                     if (result!=null&&result.isRetMsg()){
                         L.e(TAG,"result==="+result);
                         User u = (User) result.getRetData();
+                        L.e(TAG,"u====="+u);
                         if (u!=null){
                             MFGT.gotoFriendProfile(mContext,u);
                         }

@@ -2,6 +2,7 @@ package cn.ucai.superwechat.ui;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,10 +17,13 @@ import butterknife.OnClick;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 
 
 public class FriendProfileActivity extends BaseActivity {
+
+    private static final String TAG = FriendProfileActivity.class.getCanonicalName();
 
     @Bind(R.id.img_back)
     ImageView imgBack;
@@ -47,7 +51,8 @@ public class FriendProfileActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
-        if (user == null) {
+        L.e(TAG, "user====" + this.user);
+        if (this.user == null) {
             MFGT.finish(this);
         }
         initView();
@@ -69,7 +74,6 @@ public class FriendProfileActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -77,27 +81,32 @@ public class FriendProfileActivity extends BaseActivity {
     }
 
     public void isFriend() {
-        if (SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName())){
+        if (SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName())) {
             btFriendProfileSend.setVisibility(View.VISIBLE);
             btFriendProfileChat.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             btFriendProfileAdd.setVisibility(View.VISIBLE);
         }
     }
 
-    @OnClick({R.id.bt_friend_profile_send, R.id.bt_friend_profile_chat, R.id.bt_friend_profile_add,R.id.img_back})
+    @OnClick({R.id.img_back, R.id.bt_friend_profile_send, R.id.bt_friend_profile_chat, R.id.bt_friend_profile_add})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.img_back:
+                MFGT.finish(this);
+                break;
             case R.id.bt_friend_profile_send:
                 break;
             case R.id.bt_friend_profile_chat:
                 break;
             case R.id.bt_friend_profile_add:
+                Log.e(TAG, "onClick: 点我跳跳跳！！！！！" );
                 MFGT.gotoSendAddRequest(this,user.getMUserName());
-                break;
-            case R.id.img_back:
-                MFGT.finish(this);
+                L.e(TAG,"你跳没？？？？");
                 break;
         }
     }
+   /* public void onshow(View view){
+        MFGT.gotoSendAddRequest(this,user.getMUserName());
+    }*/
 }

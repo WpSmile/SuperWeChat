@@ -69,7 +69,7 @@ public class MFGT {
 
     public static void gotoSendAddRequest(Activity context,String username){
         Intent intent = new Intent();
-        intent.setClass(context,FriendProfileActivity.class);
+        intent.setClass(context,SendAddRequestActivity.class);
         intent.putExtra(I.User.USER_NAME,username);
         startActivity(context, intent);
     }

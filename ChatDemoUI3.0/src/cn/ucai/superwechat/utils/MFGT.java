@@ -10,6 +10,7 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.ui.AddContactActivity;
 import cn.ucai.superwechat.ui.FriendProfileActivity;
 import cn.ucai.superwechat.ui.LoginActivity;
+import cn.ucai.superwechat.ui.NewFriendsMsgActivity;
 import cn.ucai.superwechat.ui.RegisterActivity;
 import cn.ucai.superwechat.ui.SendAddRequestActivity;
 import cn.ucai.superwechat.ui.SettingsActivity;
@@ -74,6 +75,9 @@ public class MFGT {
         intent.putExtra(I.User.USER_NAME,username);
         startActivity(context, intent);
         L.e("他就是不跳，QAQ！！！");
+    }
+    public static void gotoNewFriendsMsg(Activity context) {
+        startActivity(context, NewFriendsMsgActivity.class);
     }
 
 }

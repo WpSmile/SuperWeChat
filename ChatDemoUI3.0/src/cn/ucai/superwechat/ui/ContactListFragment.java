@@ -33,7 +33,6 @@ import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.ContactItemView;
 
-import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.util.EMLog;
@@ -130,9 +129,9 @@ public class ContactListFragment extends EaseContactListFragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EaseUser user = (EaseUser) listView.getItemAtPosition(position);
+                User user = (User) listView.getItemAtPosition(position);
                 if (user != null) {
-                    String username = user.getUsername();
+                    String username = user.getMUserName();
                     // demo中直接进入聊天页面，实际一般是进入用户详情页
                     L.e(TAG, "aaaa======" + SuperWeChatDBManager.getInstance().getAppContactList().get(username));
                     MFGT.gotoFriendProfile(getActivity(), SuperWeChatDBManager.getInstance().getAppContactList().get(username));

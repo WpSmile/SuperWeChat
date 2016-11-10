@@ -475,9 +475,9 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         L.e(TAG,"count==="+count);
         layoutTabhost.setUnreadCount(0,count);
 		/*if (count > 0) {
-			layoutTabhost.setHasNew(1,true);
+			layoutTabhost.setHasNew(0,true);
 		} else {
-            layoutTabhost.setHasNew(1,false);
+            layoutTabhost.setHasNew(0,false);
 		}*/
     }
 
@@ -488,11 +488,11 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = getUnreadAddressCountTotal();
-				/*if (count > 0) {
-					unreadAddressLable.setVisibility(View.VISIBLE);
-				} else {
-					unreadAddressLable.setVisibility(View.INVISIBLE);
-				}*/
+                if (count > 0) {
+                    layoutTabhost.setHasNew(1,true);
+                } else {
+                    layoutTabhost.setHasNew(1,false);
+                }
             }
         });
 

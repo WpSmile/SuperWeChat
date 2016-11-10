@@ -3,9 +3,13 @@ package cn.ucai.superwechat.data;
 import android.content.Context;
 
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.utils.EaseUserUtils;
+
 import java.io.File;
 
 import cn.ucai.superwechat.I;
+import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.utils.MD5;
 
@@ -96,6 +100,14 @@ public class NetDao {
         utils.setRequestUrl(I.REQUEST_DELETE_CONTACT)
                 .addParam(I.Contact.USER_NAME,username)
                 .addParam(I.Contact.CU_NAME,cusername)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+    public static void loadAllContactlist(Context context,OkHttpUtils.OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
+                .addParam(I.Contact.USER_NAME, EMClient.getInstance().getCurrentUser())
                 .targetClass(String.class)
                 .execute(listener);
     }

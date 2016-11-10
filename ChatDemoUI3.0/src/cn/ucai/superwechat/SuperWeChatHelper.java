@@ -1087,7 +1087,43 @@ public class SuperWeChatHelper {
        }
        
        isSyncingGroupsWithServer = true;
-       
+
+       NetDao.loadAllContactlist(appContext,new OkHttpUtils.OnCompleteListener<String>() {
+           @Override
+           public void onSuccess(String s) {
+               if (s!=null){
+                   L.e(TAG,"s======"+s);
+                   Result result = ResultUtils.getListResultFromJson(s, User.class);
+                   if (result!=null&&result.isRetMsg()){
+                       List<User> list = (List<User>) result.getRetData();
+
+                       if (list!=null&&list.size()>0) {
+                           L.e(TAG,"list===="+list.size());
+                           Map<String, User> userlist = new HashMap<String, User>();
+                           for (User user : list) {
+                               EaseCommonUtils.setAppUserInitialLetter(user);
+                               userlist.put(user.getMUserName(), user);
+                           }
+                           // save the contact list to cache
+                           getAppContactList().clear();
+                           getAppContactList().putAll(userlist);
+                           // save the contact list to database
+                           UserDao dao = new UserDao(appContext);
+                           ArrayList<User> users = new ArrayList<User>(userlist.values());
+                           dao.saveAppContactList(users);
+
+                           broadcastManager.sendBroadcast(new Intent(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION));
+                       }
+                   }
+               }
+           }
+
+           @Override
+           public void onError(String error) {
+
+           }
+       });
+
        new Thread(){
            @Override
            public void run(){

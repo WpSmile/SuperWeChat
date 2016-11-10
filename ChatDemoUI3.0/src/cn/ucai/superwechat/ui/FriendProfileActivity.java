@@ -111,9 +111,7 @@ public class FriendProfileActivity extends BaseActivity {
                 }
                 break;
             case R.id.bt_friend_profile_add:
-                Log.e(TAG, "onClick: 点我跳跳跳！！！！！" );
                 MFGT.gotoSendAddRequest(this,user.getMUserName());
-                L.e(TAG,"你跳没？？？？");
                 break;
         }
     }

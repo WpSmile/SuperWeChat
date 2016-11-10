@@ -122,6 +122,7 @@ public class ContactListFragment extends EaseContactListFragment {
         Map<String, User> m = SuperWeChatHelper.getInstance().getAppContactList();
         if (m instanceof Hashtable<?, ?>) {
             m = (Map<String, User>) ((Hashtable<String, User>) m).clone();
+            //m.remove(EMClient.getInstance().getCurrentUser());
         }
         setContactsMap(m);
         super.setUpView();
@@ -196,7 +197,7 @@ public class ContactListFragment extends EaseContactListFragment {
                     break;
                 case R.id.group_item:
                     // 进入群聊列表页面
-                    startActivity(new Intent(getActivity(), GroupsActivity.class));
+                    MFGT.gotoGroups(getActivity());
                     break;
            /* case R.id.chat_room_item:
                 //进入聊天室列表页面

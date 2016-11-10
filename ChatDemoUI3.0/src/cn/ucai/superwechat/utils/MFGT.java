@@ -10,8 +10,12 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.ui.AddContactActivity;
 import cn.ucai.superwechat.ui.ChatActivity;
 import cn.ucai.superwechat.ui.FriendProfileActivity;
+import cn.ucai.superwechat.ui.GroupsActivity;
+import cn.ucai.superwechat.ui.GuideActivity;
 import cn.ucai.superwechat.ui.LoginActivity;
 import cn.ucai.superwechat.ui.NewFriendsMsgActivity;
+import cn.ucai.superwechat.ui.NewGroupActivity;
+import cn.ucai.superwechat.ui.PublicGroupsActivity;
 import cn.ucai.superwechat.ui.RegisterActivity;
 import cn.ucai.superwechat.ui.SendAddRequestActivity;
 import cn.ucai.superwechat.ui.SettingsActivity;
@@ -86,5 +90,14 @@ public class MFGT {
         intent.setClass(context,ChatActivity.class);
         intent.putExtra("userId",username);
         startActivity(context, intent);
+    }
+    public static void gotoGroups(Activity context) {
+        startActivity(context, GroupsActivity.class);
+    }
+    public static void gotoNewGroup(Activity context) {
+        startActivity(context, NewGroupActivity.class);
+    }
+    public static void gotoPublicGroups(Activity context) {
+        startActivity(context, PublicGroupsActivity.class);
     }
 }

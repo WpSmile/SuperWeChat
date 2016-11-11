@@ -154,10 +154,15 @@ public class Group implements Serializable{
 				+ ", mgroupIsPublic=" + mgroupIsPublic + ", mgroupAllowInvites=" + mgroupAllowInvites + "]";
 	}
 
-	public String getAvatar(){
-		String path = "http://101.251.196.90:8000/SuperWeChatServerV2.0/downloadAvatar?name_or_hxid=1478828462658" +
-				"&avatarType=group_icon&m_avatar_suffix=.jpg";
+	public String getAvatar() {
+		String path = "http://101.251.196.90:8000/SuperWeChatServerV2.0/downloadAvatar?name_or_hxid="+getMGroupHxid()
+				+"&avatarType=group_icon&m_avatar_suffix="+getMAvatarSuffix()/*+"&="+getMAvatarLastUpdateTime()*/;
 		return path;
 	}
-	
+
+	public static String getAvatar(String hxid){
+		String path = "http://101.251.196.90:8000/SuperWeChatServerV2.0/downloadAvatar?name_or_hxid="+hxid
+				+"&avatarType=group_icon&m_avatar_suffix=.jpg";
+		return path;
+	}
 }

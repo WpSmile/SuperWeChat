@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@color/colorPrimary"
         android:gravity="center_vertical" >
 
         <LinearLayout
@@ -41,7 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="7dp" />
     </RelativeLayout>
-
+    <!--<include layout="@layout/view_layout_title"/>-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -5,4 +5,5 @@
     <string name="toast_nick_not_modify">昵称未修改</string>
     <string name="build_new_group_chat">新建群组</string>
     <string name="groups_avatar">群图标</string>
+    <string name="Failed_to_add_group_members">添加群组成员失败</string>
 </resources>

@@ -58,18 +58,22 @@ public class FriendProfileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_profile);
         ButterKnife.bind(this);
-
+        //user1 = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
+        //username = user1.getMUserName();
         username = getIntent().getStringExtra(I.User.USER_NAME);
-        L.e(TAG, "user====" + username);
+
+        L.e(TAG, "username====" + username);
         if (username == null) {
             MFGT.finish(this);
             return;
         }
-        initView();
         user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
-        if (username == null) {
+        L.e(TAG,"user===="+user);
+        initView();
+        if (user == null) {
             isFriend = false;
         } else {
+            L.e(TAG,"myUsername====="+username);
             setUserUnfo();
             isFriend = true;
         }
@@ -81,8 +85,6 @@ public class FriendProfileActivity extends BaseActivity {
         imgBack.setVisibility(View.VISIBLE);
         txtMtitle.setVisibility(View.VISIBLE);
         txtMtitle.setText(getString(R.string.userinfo_txt_profile));
-
-        setUserUnfo();
 
     }
 
@@ -100,12 +102,14 @@ public class FriendProfileActivity extends BaseActivity {
                 if (s != null) {
                     Result result = ResultUtils.getResultFromJson(s, User.class);
                     if (result != null && result.isRetMsg()) {
-                        User user = (User) result.getRetData();
-                        if (user != null) {
-                            setUserUnfo();
+                        User u = (User) result.getRetData();
+                        if (u != null) {
+
                             if (isFriend) {
-                                SuperWeChatHelper.getInstance().saveAppContact(user);
+                                SuperWeChatHelper.getInstance().saveAppContact(u);
                             }
+                            user = u;
+                            setUserUnfo();
                         } else {
                             syncFail();
                         }
@@ -125,8 +129,10 @@ public class FriendProfileActivity extends BaseActivity {
     }
 
     private void syncFail() {
-        MFGT.finish(this);
-        return;
+        if (isFriend){
+            MFGT.finish(this);
+            return;
+        }
     }
 
     @Override

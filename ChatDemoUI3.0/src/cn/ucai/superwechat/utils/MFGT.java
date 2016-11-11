@@ -72,7 +72,6 @@ public class MFGT {
         intent.putExtra(I.User.USER_NAME,username);
         startActivity(context, intent);
     }
-
     public static void gotoSendAddRequest(Activity context,String username) {
         L.e("我也很想跳啊！！！！");
         Intent intent = new Intent();

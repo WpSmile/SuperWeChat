@@ -20,8 +20,12 @@ import butterknife.OnClick;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.utils.ResultUtils;
 
 
 public class FriendProfileActivity extends BaseActivity {
@@ -39,6 +43,7 @@ public class FriendProfileActivity extends BaseActivity {
     @Bind(R.id.tv_profile_username)
     TextView tvprofileusername;
 
+    String username;
     User user;
     @Bind(R.id.bt_friend_profile_send)
     Button btFriendProfileSend;
@@ -46,6 +51,7 @@ public class FriendProfileActivity extends BaseActivity {
     Button btFriendProfileChat;
     @Bind(R.id.bt_friend_profile_add)
     Button btFriendProfileAdd;
+    boolean isFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +59,22 @@ public class FriendProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_friend_profile);
         ButterKnife.bind(this);
 
-        user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
-        L.e(TAG, "user====" + this.user);
-        if (this.user == null) {
+        username = getIntent().getStringExtra(I.User.USER_NAME);
+        L.e(TAG, "user====" + username);
+        if (username == null) {
             MFGT.finish(this);
+            return;
         }
         initView();
+        user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
+        if (username == null) {
+            isFriend = false;
+        } else {
+            setUserUnfo();
+            isFriend = true;
+        }
+        isFriend(isFriend);
+        syncUserInfo();
     }
 
     private void initView() {
@@ -67,7 +83,7 @@ public class FriendProfileActivity extends BaseActivity {
         txtMtitle.setText(getString(R.string.userinfo_txt_profile));
 
         setUserUnfo();
-        isFriend();
+
     }
 
     private void setUserUnfo() {
@@ -77,14 +93,50 @@ public class FriendProfileActivity extends BaseActivity {
     }
 
 
+    private void syncUserInfo() {
+        NetDao.syncUserInfo(this, username, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s != null) {
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if (result != null && result.isRetMsg()) {
+                        User user = (User) result.getRetData();
+                        if (user != null) {
+                            setUserUnfo();
+                            if (isFriend) {
+                                SuperWeChatHelper.getInstance().saveAppContact(user);
+                            }
+                        } else {
+                            syncFail();
+                        }
+                    } else {
+                        syncFail();
+                    }
+                } else {
+                    syncFail();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                syncFail();
+            }
+        });
+    }
+
+    private void syncFail() {
+        MFGT.finish(this);
+        return;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
 
-    public void isFriend() {
-        if (SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName())) {
+    public void isFriend(boolean isFriend) {
+        if (isFriend) {
             btFriendProfileSend.setVisibility(View.VISIBLE);
             btFriendProfileChat.setVisibility(View.VISIBLE);
         } else {
@@ -99,7 +151,7 @@ public class FriendProfileActivity extends BaseActivity {
                 MFGT.finish(this);
                 break;
             case R.id.bt_friend_profile_send:
-                MFGT.gotoChat(this,user.getMUserName());
+                MFGT.gotoChat(this, user.getMUserName());
                 break;
             case R.id.bt_friend_profile_chat:
                 if (!EMClient.getInstance().isConnected())
@@ -111,7 +163,7 @@ public class FriendProfileActivity extends BaseActivity {
                 }
                 break;
             case R.id.bt_friend_profile_add:
-                MFGT.gotoSendAddRequest(this,user.getMUserName());
+                MFGT.gotoSendAddRequest(this, user.getMUserName());
                 break;
         }
     }

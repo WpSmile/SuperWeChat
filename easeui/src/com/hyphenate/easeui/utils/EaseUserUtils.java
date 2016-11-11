@@ -70,7 +70,25 @@ public class EaseUserUtils {
             Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
         }
     }
-    
+    /**
+     * set group avatar
+     * @param hxid
+     */
+    public static void setAppGroupAvatar(Context context, String hxid, ImageView imageView){
+
+        if(hxid != null){
+            try {
+                int avatarResId = Integer.parseInt(hxid);
+                Glide.with(context).load(avatarResId).into(imageView);
+            } catch (Exception e) {
+                //use default avatar
+                Glide.with(context).load(hxid).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar).into(imageView);
+            }
+        }else{
+            Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
+        }
+    }
+
     /**
      * set user's nickname
      */
